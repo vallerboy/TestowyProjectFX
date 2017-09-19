@@ -15,7 +15,7 @@ public class UserDaoImpl implements UserDao {
     public boolean login(String name, String password) {
         try {
             PreparedStatement preparedStatement = connector.getConnection().prepareStatement(
-                    "SELECT * FROM user WHERE user = ?"
+                    "SELECT * FROM user WHERE username = ?"
             );
             preparedStatement.setString(1, name);
             ResultSet resultSet  = preparedStatement.executeQuery();
@@ -37,7 +37,7 @@ public class UserDaoImpl implements UserDao {
 
         try {
             PreparedStatement preparedStatement = connector.getConnection().prepareStatement(
-                    "SELECT * FROM user WHERE user = ?"
+                    "SELECT * FROM user WHERE username = ?"
             );
             preparedStatement.setString(1, name);
             ResultSet resultSet  = preparedStatement.executeQuery();
