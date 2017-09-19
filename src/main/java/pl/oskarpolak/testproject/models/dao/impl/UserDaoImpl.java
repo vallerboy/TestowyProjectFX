@@ -23,7 +23,6 @@ public class UserDaoImpl implements UserDao {
                 return false;
             }
 
-            preparedStatement.close();
             return resultSet.getString("password").equals(password);
         } catch (SQLException e) {
             e.printStackTrace();

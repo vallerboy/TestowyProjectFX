@@ -33,9 +33,30 @@ public class LoginController implements Initializable{
         buttonLogin.setOnMouseClicked(e -> tryLogin());
     }
 
+    private boolean checkLoginData(){
+        String login = textLogin.getText();
+        String password = textPassword.getText();
+
+        if(login.isEmpty() || password.isEmpty()){
+            Utils.createSimpleDialog("Logowanie", "", "Pola nie mogą być puste");
+            return false;
+        }
+
+        if(login.length() <= 3 || password.length() <= 5){
+            Utils.createSimpleDialog("Logowanie", "", "Dane za krótkie");
+            return false;
+        }
+        
+        return true;
+    }
+
     private void tryLogin() {
         String login = textLogin.getText();
         String password = textPassword.getText();
+
+        if(!checkLoginData()){
+            return;
+        }
 
         if(userDao.login(login, password)){
             userSession.setUsername(login);
@@ -46,4 +67,5 @@ public class LoginController implements Initializable{
             Utils.createSimpleDialog("Logowanie", "", "Masz błąd w danych");
         }
     }
+
 }
