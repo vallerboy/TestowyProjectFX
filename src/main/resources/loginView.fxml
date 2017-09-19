@@ -33,7 +33,7 @@
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
                         <TextField fx:id="textLoginR" layoutX="176.0" layoutY="87.0" prefHeight="31.0" prefWidth="252.0" promptText="Login" />
-                        <PasswordField fx:id="textPaswordR" layoutX="177.0" layoutY="143.0" prefHeight="31.0" prefWidth="252.0" promptText="Hasło" />
+                        <PasswordField fx:id="textPasswordR" layoutX="177.0" layoutY="143.0" prefHeight="31.0" prefWidth="252.0" promptText="Hasło" />
                         <PasswordField fx:id="textPasswordRepeatR" layoutX="177.0" layoutY="196.0" prefHeight="31.0" prefWidth="252.0" promptText="Powtórz hasło" />
                         <Button fx:id="buttonRegister" layoutX="339.0" layoutY="252.0" mnemonicParsing="false" text="Zarejestruj" />
                         <Label layoutX="246.0" layoutY="35.0" text="Rejestracja">

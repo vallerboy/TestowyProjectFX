@@ -71,6 +71,7 @@ public class UserDaoImpl implements UserDao {
             );
             preparedStatement.setInt(1, id);
             preparedStatement.execute();
+            preparedStatement.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
