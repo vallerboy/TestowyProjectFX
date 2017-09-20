@@ -4,6 +4,8 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
 import javafx.scene.input.MouseEvent;
 import pl.oskarpolak.testproject.models.MysqlConnector;
 import pl.oskarpolak.testproject.models.UserSession;
@@ -13,16 +15,16 @@ import java.util.ResourceBundle;
 
 public class MainController implements Initializable{
 
-    // Dorobic widok logowania login / haslo i odpowiednia tabela
-    // Podlgad kontakow w mainView i dodawnie nowych kontaktow
+
+    @FXML
+    Label textNumber, textName;
+
+    @FXML
+    ListView listContacts;
 
     private UserSession session  = UserSession.getInstance();
 
     public void initialize(URL location, ResourceBundle resources) {
-        MysqlConnector.getInstance();
 
-        if(session.isLogedIn()){
-            System.out.println("USER JEST ZALOGOWANY!");
-        }
     }
 }

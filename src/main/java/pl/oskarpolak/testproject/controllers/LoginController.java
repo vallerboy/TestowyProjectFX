@@ -1,16 +1,22 @@
 package pl.oskarpolak.testproject.controllers;
 
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 import pl.oskarpolak.testproject.models.UserSession;
 import pl.oskarpolak.testproject.models.Utils;
 import pl.oskarpolak.testproject.models.dao.UserDao;
 import pl.oskarpolak.testproject.models.dao.impl.UserDaoImpl;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -31,6 +37,47 @@ public class LoginController implements Initializable{
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         buttonLogin.setOnMouseClicked(e -> tryLogin());
+        buttonRegister.setOnMouseClicked(e -> tryRegister());
+    }
+
+
+    private void tryRegister() {
+        String login = textLoginR.getText();
+        String password = textPasswordR.getText();
+
+        if(!checkRegisterData()){
+            return;
+        }
+
+        if(userDao.register(login,  password)){
+            Utils.createSimpleDialog("Rejestracja", "", "Zarejestrowałes sie poprawnie");
+        }else{
+            Utils.createSimpleDialog("Rejestracja", "", "Login zajety");
+
+        }
+
+    }
+
+    private boolean checkRegisterData() {
+        String login = textLoginR.getText();
+        String password = textPasswordR.getText();
+        String passwordRepeat = textPasswordRepeatR.getText();
+
+        if(login.isEmpty() || password.isEmpty() || passwordRepeat.isEmpty()){
+            Utils.createSimpleDialog("Rejestracja", "", "Pola nie mogą być puste");
+            return false;
+        }
+
+        if(!password.equals(passwordRepeat)){
+            Utils.createSimpleDialog("Rejestracja", "", "Hasła muszą się zgadzać");
+            return false;
+        }
+
+        if(password.length() < 5){
+            Utils.createSimpleDialog("Rejestracja", "", "Hasło musi być dluzsze niz 5 znakow");
+            return false;
+        }
+        return  true;
     }
 
     private boolean checkLoginData(){
@@ -46,10 +93,12 @@ public class LoginController implements Initializable{
             Utils.createSimpleDialog("Logowanie", "", "Dane za krótkie");
             return false;
         }
-        
+
         return true;
     }
 
+    // Zadanie!
+    //
     private void tryLogin() {
         String login = textLogin.getText();
         String password = textPassword.getText();
@@ -62,8 +111,14 @@ public class LoginController implements Initializable{
             userSession.setUsername(login);
             userSession.setLogedIn(true);
 
-            Utils.createSimpleDialog("Logowanie", "", "Zalogowano poprawnie");
-         }else{
+            try {
+                Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("mainView.fxml"));
+                Stage stageRoot = (Stage) buttonLogin.getScene().getWindow();
+                stageRoot.setScene(new Scene(root, 600,400));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }else{
             Utils.createSimpleDialog("Logowanie", "", "Masz błąd w danych");
         }
     }

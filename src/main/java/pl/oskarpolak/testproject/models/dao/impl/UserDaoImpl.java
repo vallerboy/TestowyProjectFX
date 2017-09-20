@@ -1,6 +1,7 @@
 package pl.oskarpolak.testproject.models.dao.impl;
 
 import pl.oskarpolak.testproject.models.MysqlConnector;
+import pl.oskarpolak.testproject.models.Utils;
 import pl.oskarpolak.testproject.models.dao.UserDao;
 
 import java.sql.PreparedStatement;
@@ -23,7 +24,7 @@ public class UserDaoImpl implements UserDao {
                 return false;
             }
 
-            return resultSet.getString("password").equals(password);
+            return resultSet.getString("password").equals(Utils.shaHash(password));
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -49,7 +50,7 @@ public class UserDaoImpl implements UserDao {
             );
             preparedStatementInsert.setInt(1, 0);
             preparedStatementInsert.setString(2, name);
-            preparedStatementInsert.setString(3, password);
+            preparedStatementInsert.setString(3, Utils.shaHash(password));
 
             preparedStatementInsert.execute();
 
