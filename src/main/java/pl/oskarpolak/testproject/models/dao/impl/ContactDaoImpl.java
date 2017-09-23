@@ -45,11 +45,13 @@ public class ContactDaoImpl implements ContactDao {
     public String getNumber(String contact) {
         try {
             PreparedStatement preparedStatement = connector.getConnection().prepareStatement(
-                    "SELECT number FROM contact WHERE name = ?"
+                    "SELECT `number` FROM `contact` WHERE `name` = ?"
             );
 
             preparedStatement.setString(1, contact);
             ResultSet resultSet = preparedStatement.executeQuery();
+
+            resultSet.next();
 
             return resultSet.getString("number");
 

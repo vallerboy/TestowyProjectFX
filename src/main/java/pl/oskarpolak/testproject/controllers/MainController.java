@@ -40,7 +40,8 @@ public class MainController implements Initializable{
         listContacts.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                System.out.println(newValue);
+                textName.setText(newValue);
+                textNumber.setText(contactDao.getNumber(newValue));
             }
         });
     }
