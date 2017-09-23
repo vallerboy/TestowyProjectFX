@@ -1,5 +1,7 @@
 package pl.oskarpolak.testproject.controllers;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
@@ -25,7 +27,7 @@ public class MainController implements Initializable{
     Label textNumber, textName;
 
     @FXML
-    ListView listContacts;
+    ListView<String> listContacts;
 
     private ObservableList contactItems;
 
@@ -34,6 +36,13 @@ public class MainController implements Initializable{
 
     public void initialize(URL location, ResourceBundle resources) {
         loadContacts();
+
+        listContacts.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                System.out.println(newValue);
+            }
+        });
     }
 
     private void loadContacts() {
