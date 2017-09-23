@@ -1,6 +1,7 @@
 package pl.oskarpolak.testproject.models.dao.impl;
 
 import pl.oskarpolak.testproject.models.MysqlConnector;
+import pl.oskarpolak.testproject.models.UserSession;
 import pl.oskarpolak.testproject.models.Utils;
 import pl.oskarpolak.testproject.models.dao.UserDao;
 
@@ -11,6 +12,7 @@ import java.sql.SQLException;
 public class UserDaoImpl implements UserDao {
 
     private MysqlConnector connector = MysqlConnector.getInstance();
+    private UserSession session = UserSession.getInstance();
 
     @Override
     public boolean login(String name, String password) {
@@ -24,6 +26,7 @@ public class UserDaoImpl implements UserDao {
                 return false;
             }
 
+            session.setId(resultSet.getInt("id"));
             return resultSet.getString("password").equals(Utils.shaHash(password));
         } catch (SQLException e) {
             e.printStackTrace();
