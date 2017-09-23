@@ -7,6 +7,6 @@ public interface ContactDao {
     String getNumber(String contact);
     boolean addContact(String name, String number);
     void removeContact(String name);
-    boolean editContact(String name, String number);
+    boolean editContact(String newName, String number, String oldName);
 
 }

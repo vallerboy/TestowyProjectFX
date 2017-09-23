@@ -44,6 +44,10 @@ public class MainController implements Initializable{
     private ContactDao contactDao = new ContactDaoImpl();
 
     public void initialize(URL location, ResourceBundle resources) {
+        textName.setEditable(false);
+        textNumber.setEditable(false);
+
+
         loadContacts();
 
         listContacts.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
@@ -52,6 +56,29 @@ public class MainController implements Initializable{
         });
 
         buttonLogout.setOnMouseClicked(e -> logout());
+
+        updateActions();
+
+
+    }
+
+    private void updateActions(){
+        textName.setOnMouseClicked(e -> {
+            if(e.getClickCount() >= 2){
+                textName.setEditable(true);
+            }
+        });
+
+        textName.focusedProperty().addListener(new ChangeListener<Boolean>() {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+               if(!newValue){
+                   contactDao.editContact(textName.getText(), textNumber.getText(), listContacts.getSelectionModel().getSelectedItem());
+                   loadContacts();
+                   textName.setEditable(false);
+               }
+            }
+        });
     }
 
     private void logout() {

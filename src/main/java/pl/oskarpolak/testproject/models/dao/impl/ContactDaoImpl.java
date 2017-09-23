@@ -51,10 +51,9 @@ public class ContactDaoImpl implements ContactDao {
             preparedStatement.setString(1, contact);
             ResultSet resultSet = preparedStatement.executeQuery();
 
-            resultSet.next();
-
-            return resultSet.getString("number");
-
+            while (resultSet.next()) {
+                return resultSet.getString("number");
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -96,14 +95,15 @@ public class ContactDaoImpl implements ContactDao {
     }
 
     @Override
-    public boolean editContact(String name, String number) {
+    public boolean editContact(String newName, String number, String oldName) {
         try {
             PreparedStatement preparedStatement = connector.getConnection().prepareStatement(
-                    "UPDATE contact SET number = ? WHERE name = ?"
+                    "UPDATE contact SET number = ?, name = ? WHERE name = ?"
             );
 
             preparedStatement.setString(1, number);
-            preparedStatement.setString(2, name);
+            preparedStatement.setString(2, newName);
+            preparedStatement.setString(3, oldName);
 
             preparedStatement.execute();
             preparedStatement.close();
