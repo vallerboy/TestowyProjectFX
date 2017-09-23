@@ -86,6 +86,7 @@ public class ContactDaoImpl implements ContactDao {
             PreparedStatement preparedStatement = connector.getConnection().prepareStatement(
                     "DELETE FROM contact WHERE name = ?"
             );
+            preparedStatement.setString(1, name);
             preparedStatement.execute();
             preparedStatement.close();
 

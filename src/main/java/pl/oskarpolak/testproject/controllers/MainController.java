@@ -18,6 +18,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import pl.oskarpolak.testproject.models.MysqlConnector;
 import pl.oskarpolak.testproject.models.UserSession;
+import pl.oskarpolak.testproject.models.Utils;
 import pl.oskarpolak.testproject.models.dao.ContactDao;
 import pl.oskarpolak.testproject.models.dao.impl.ContactDaoImpl;
 
@@ -30,13 +31,13 @@ public class MainController implements Initializable{
 
 
     @FXML
-    TextField textNumber, textName;
+    TextField textNumber, textName, textCName, textCNumber;
 
     @FXML
     ListView<String> listContacts;
 
     @FXML
-    Button buttonLogout;
+    Button buttonLogout, buttonAdd, buttonDelete;
 
     private ObservableList contactItems;
 
@@ -59,7 +60,26 @@ public class MainController implements Initializable{
 
         updateActions();
 
+        buttonAdd.setOnMouseClicked(e -> addContact());
+        buttonDelete.setOnMouseClicked(e -> deleteContact());
 
+    }
+
+    private void deleteContact() {
+        contactDao.removeContact(listContacts.getSelectionModel().getSelectedItem());
+        Utils.createSimpleDialog("Usuwanie", "", "Poprawnie wyrzuciłeś  kontakt");
+        loadContacts();
+
+    }
+
+    private void addContact() {
+        contactDao.addContact(textCName.getText(), textCNumber.getText());
+        Utils.createSimpleDialog("Dodawnie", "", "Poprawnie dodałeś kontakt");
+
+        textCName.clear();
+        textCNumber.clear();
+
+        loadContacts();
     }
 
     private void updateActions(){
@@ -72,11 +92,28 @@ public class MainController implements Initializable{
         textName.focusedProperty().addListener(new ChangeListener<Boolean>() {
             @Override
             public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-               if(!newValue){
-                   contactDao.editContact(textName.getText(), textNumber.getText(), listContacts.getSelectionModel().getSelectedItem());
-                   loadContacts();
-                   textName.setEditable(false);
-               }
+                if(!newValue){
+                    contactDao.editContact(textName.getText(), textNumber.getText(), listContacts.getSelectionModel().getSelectedItem());
+                    loadContacts();
+                    textName.setEditable(false);
+                }
+            }
+        });
+
+        textNumber.setOnMouseClicked(e -> {
+            if(e.getClickCount() >= 2){
+                textNumber.setEditable(true);
+            }
+        });
+
+        textNumber.focusedProperty().addListener(new ChangeListener<Boolean>() {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+                if(!newValue){
+                    contactDao.editContact(textName.getText(), textNumber.getText(), listContacts.getSelectionModel().getSelectedItem());
+                    loadContacts();
+                    textNumber.setEditable(false);
+                }
             }
         });
     }
