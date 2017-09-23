@@ -24,14 +24,14 @@ public class ContactDaoImpl implements ContactDao {
         List<String> nameList = new ArrayList<>();
         try {
             PreparedStatement preparedStatement = connector.getConnection().prepareStatement(
-                    "SELECT name FROM contactList INNER JOIN user ON user.id = contactList.user WHERE user.username = ?"
+                    "SELECT name FROM contact INNER JOIN user ON user.id = contact.user WHERE user.username = ?"
             );
 
             preparedStatement.setString(1, username);
             ResultSet resultSet = preparedStatement.executeQuery();
 
             while(resultSet.next()){
-                nameList.add(resultSet.getString("user"));
+                nameList.add(resultSet.getString("name"));
             }
             preparedStatement.close();
 
@@ -45,7 +45,7 @@ public class ContactDaoImpl implements ContactDao {
     public String getNumber(String contact) {
         try {
             PreparedStatement preparedStatement = connector.getConnection().prepareStatement(
-                    "SELECT number FROM contactList WHERE name = ?"
+                    "SELECT number FROM contact WHERE name = ?"
             );
 
             preparedStatement.setString(1, contact);
@@ -63,7 +63,7 @@ public class ContactDaoImpl implements ContactDao {
     public boolean addContact(String name, String number) {
         try {
             PreparedStatement preparedStatement = connector.getConnection().prepareStatement(
-                    "INSERT INTO contactList VALUES(?,?,?,?)"
+                    "INSERT INTO contact VALUES(?,?,?,?)"
             );
 
             preparedStatement.setInt(1,0);
@@ -83,7 +83,7 @@ public class ContactDaoImpl implements ContactDao {
     public void removeContact(String name) {
         try {
             PreparedStatement preparedStatement = connector.getConnection().prepareStatement(
-                    "DELETE FROM contactList WHERE name = ?"
+                    "DELETE FROM contact WHERE name = ?"
             );
             preparedStatement.execute();
             preparedStatement.close();
@@ -97,7 +97,7 @@ public class ContactDaoImpl implements ContactDao {
     public boolean editContact(String name, String number) {
         try {
             PreparedStatement preparedStatement = connector.getConnection().prepareStatement(
-                    "UPDATE contactList SET number = ? WHERE name = ?"
+                    "UPDATE contact SET number = ? WHERE name = ?"
             );
 
             preparedStatement.setString(1, number);
